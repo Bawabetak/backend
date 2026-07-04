@@ -1,0 +1,40 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# Rider
+.idea/
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.*
+
+# User Secrets
+appsettings.Development.json
+
+# Publish
+publish/
+
+# Test Results
+TestResults/
+
+# Coverage
+coverage/
+
+# OS files
+Thumbs.db
+.DS_Store
