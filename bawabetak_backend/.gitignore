@@ -25,6 +25,7 @@ logs/
 
 # User Secrets
 appsettings.Development.json
+appsettings.json
 
 # Publish
 publish/
