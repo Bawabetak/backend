@@ -18,10 +18,15 @@ obj/
 # Logs
 *.log
 logs/
+# Publish profiles
+**/Properties/PublishProfiles/
+*.pubxml
+*.pubxml.user
 
 # Environment files
 .env
 .env.*
+
 
 # User Secrets
 appsettings.Development.json
