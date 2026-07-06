@@ -1,5 +1,7 @@
 ﻿
 
+using bawabetak_backend.Extensions.DependencyInjection;
+
 namespace bawabetak_backend;
 
 public class Program
@@ -11,7 +13,10 @@ public class Program
         builder.Services
                .AddDatabase(builder.Configuration)
                .AddSwaggerConfiguration()
-               .AddControllers();
+               .AddRepositories()
+               .AddAppOptions(builder.Configuration)
+                .AddHelpers()
+               .AddControllers();               
 
         var app = builder.Build();
     
