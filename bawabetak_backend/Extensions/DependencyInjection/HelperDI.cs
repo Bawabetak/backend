@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using bawabetak_backend.Helpers.Implementation;
+using Microsoft.AspNetCore.Identity;
 using Wasla_Backend.Helpers.EmailSender;
 
 namespace bawabetak_backend.Extensions.DependencyInjection
@@ -9,6 +10,7 @@ namespace bawabetak_backend.Extensions.DependencyInjection
         {
 
             services.AddScoped<IEmailSenderHelper, EmailSenderHelper>();
+            services.AddScoped<ICacheHelper, CacheHelper>();
             return services;
         }
     }

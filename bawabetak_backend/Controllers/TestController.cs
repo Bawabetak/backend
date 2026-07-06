@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using bawabetak_backend.Helpers.Errors;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bawabetak.Controllers
 {
@@ -7,10 +8,17 @@ namespace Bawabetak.Controllers
     public class TestController : ControllerBase
     {
         private readonly IEmailSenderHelper _emailSender;
+        private readonly ICacheHelper _cacheManager;
+        private readonly IBackgroundJobClient _backgroundJob; 
 
-        public TestController(IEmailSenderHelper emailSender)
+        public TestController(
+            IEmailSenderHelper emailSender,
+            ICacheHelper cacheManager,
+            IBackgroundJobClient backgroundJob)
         {
             _emailSender = emailSender;
+            _cacheManager = cacheManager;
+            _backgroundJob = backgroundJob;
         }
 
         [HttpGet]
@@ -29,5 +37,44 @@ namespace Bawabetak.Controllers
 
             return Ok(new { message = "تم إرسال الإيميل التجريبي بنجاح! شيك على الـ Inbox." });
         }
+
+        [HttpPost("redis-cache/set")]
+        public async Task<IActionResult> SetRedisCache([FromQuery] string key, [FromBody] object value, [FromQuery] int? ttlInMinutes = null)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                return BadRequest(new { success = false, message = "Redis Key cannot be empty!" });
+
+            TimeSpan? ttl = ttlInMinutes.HasValue ? TimeSpan.FromMinutes(ttlInMinutes.Value) : null;
+
+            await _cacheManager.SetAsync(key, value, ttl);
+
+            return Ok(new { success = true, message = $"Data written to Redis successfully with Key: '{key}'" });
+        }
+
+        [HttpGet("redis-cache/get")]
+        public async Task<IActionResult> GetRedisCache([FromQuery] string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                return BadRequest(new { success = false, message = "Redis Key cannot be empty!" });
+
+            var cachedData = await _cacheManager.GetAsync<object>(key);
+
+            if (cachedData == null)
+                return NotFound(new { success = false, message = $"Redis Key '{key}' not found or has expired!" });
+
+            return Ok(new { success = true, source = "Redis Server (Upstash) 🚀", data = cachedData });
+        }
+
+        [HttpPost("hangfire/fire-and-forget")]
+        public IActionResult TriggerBackgroundJob([FromQuery] string taskName)
+        {
+            if (string.IsNullOrWhiteSpace(taskName))
+                return BadRequest(new { success = false, message = "Task name cannot be empty!" });
+
+            _backgroundJob.Enqueue(() => Console.WriteLine($"--> Hangfire executing: {taskName} in background at {DateTime.UtcNow}"));
+
+            return Ok(new { success = true, message = "Task enqueued successfully via Hangfire (Redis Storage)!" });
+        }
+      
     }
 }

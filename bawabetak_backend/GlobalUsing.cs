@@ -10,4 +10,16 @@ global using System.Net.Mail;
 global using bawabetak_backend.Helpers.Interface;
 global using Microsoft.Extensions.Options;
 global using Wasla_Backend.Helpers.EmailSender;
+global using System.Text.Json;
+global using Microsoft.Extensions.Caching.Distributed;
+global using Hangfire;
+global using Hangfire.Redis.StackExchange;
+global using bawabetak_backend.Enums;
+global using bawabetak_backend.Helpers.Static;
+global using System.Text.Json.Serialization;
+global using bawabetak_backend.Exceptions;
+global using bawabetak_backend.Middlewares;
+global using AutoMapper;
+global using System.Reflection;
+
 

@@ -1,9 +1,12 @@
-﻿namespace bawabetak_backend.Extensions.Pipeline;
+﻿
+namespace bawabetak_backend.Extensions.Pipeline;
 
 public static class ApplicationPipeline
 {
     public static WebApplication UseApplicationPipeline(this WebApplication app)
     {
+        app.UseMiddleware<ExceptionMiddleware>();
+        app.UseMiddleware<RateLimitingMiddleware>();
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
@@ -18,7 +21,17 @@ public static class ApplicationPipeline
         app.UseAuthorization();
 
         app.MapControllers();
-
+        app.UseHangfireDashboard("/hangfire", new DashboardOptions
+        {
+            Authorization = new[] { new AllowAllDashboardAuthorizationFilter() }
+        });
         return app;
+    }
+    public class AllowAllDashboardAuthorizationFilter : Hangfire.Dashboard.IDashboardAuthorizationFilter
+    {
+        public bool Authorize(Hangfire.Dashboard.DashboardContext context)
+        {
+            return true;
+        }
     }
 }
