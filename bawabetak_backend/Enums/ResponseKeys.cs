@@ -5,5 +5,9 @@
         InternalServerError,
         TooManyRequests,
         success,
+        FileIsRequired,
+        FileSizeExceeded,
+        InvalidFileType,
+        InvalidFileContentType
     }
 }

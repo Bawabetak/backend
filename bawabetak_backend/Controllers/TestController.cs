@@ -1,5 +1,6 @@
-﻿using bawabetak_backend.Helpers.Errors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
 
 namespace Bawabetak.Controllers
 {
@@ -9,16 +10,19 @@ namespace Bawabetak.Controllers
     {
         private readonly IEmailSenderHelper _emailSender;
         private readonly ICacheHelper _cacheManager;
-        private readonly IBackgroundJobClient _backgroundJob; 
+        private readonly IBackgroundJobClient _backgroundJob;
+        private readonly IFileService _fileService; 
 
         public TestController(
             IEmailSenderHelper emailSender,
             ICacheHelper cacheManager,
-            IBackgroundJobClient backgroundJob)
+            IBackgroundJobClient backgroundJob,
+            IFileService fileService) 
         {
             _emailSender = emailSender;
             _cacheManager = cacheManager;
             _backgroundJob = backgroundJob;
+            _fileService = fileService;
         }
 
         [HttpGet]
@@ -75,6 +79,34 @@ namespace Bawabetak.Controllers
 
             return Ok(new { success = true, message = "Task enqueued successfully via Hangfire (Redis Storage)!" });
         }
-      
+
+     
+        [HttpPost("files/upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file, [FromQuery] FileCategory category)
+        {
+            string savedFileName = await _fileService.SaveFileAsync(file, category);
+
+            return Ok(new
+            {
+                success = true,
+                message = "File verified and saved successfully!",
+                databaseFileName = savedFileName
+            });
+        }
+
+        [HttpGet("files/full-url")]
+        public IActionResult GetFileUrl([FromQuery] string fileName, [FromQuery] FileCategory category)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                return BadRequest(new { success = false, message = "File name cannot be empty!" });
+
+            string fullUrl = _fileService.GetFullUrl(fileName, category);
+
+            return Ok(new
+            {
+                success = true,
+                fullPathUrl = fullUrl
+            });
+        }
     }
 }

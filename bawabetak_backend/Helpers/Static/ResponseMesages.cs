@@ -6,7 +6,11 @@
         {
             [ResponseKeys.InternalServerError] = "Internal server error.",
             [ResponseKeys.TooManyRequests] = "Too many requests. Please try again later.",
-            [ResponseKeys.success] = "Request processed successfully."
+            [ResponseKeys.success] = "Request processed successfully.",
+            [ResponseKeys.FileIsRequired] = "File is required.",
+            [ResponseKeys.FileSizeExceeded] = "File size exceeded the limit.",
+            [ResponseKeys.InvalidFileType] = "Invalid file type.",
+            [ResponseKeys.InvalidFileContentType] = "Invalid file content type."
 
 
 

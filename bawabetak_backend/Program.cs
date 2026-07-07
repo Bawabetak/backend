@@ -1,7 +1,5 @@
 ﻿
 
-using Bawabetak.Extensions.Configurations;
-using bawabetak_backend.Extensions.DependencyInjection;
 
 namespace bawabetak_backend;
 
@@ -15,6 +13,7 @@ public class Program
                .AddDatabase(builder.Configuration)
                .AddSwaggerConfiguration()
                .AddRepositories()
+               .AddServices()
                .AddAppOptions(builder.Configuration)
                .AddHelpers()
                .AddCacheServices(builder.Configuration)

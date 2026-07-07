@@ -21,5 +21,9 @@ global using bawabetak_backend.Exceptions;
 global using bawabetak_backend.Middlewares;
 global using AutoMapper;
 global using System.Reflection;
+global using bawabetak_backend.Services.Interface;
+global using bawabetak_backend.Helpers.ProgramHelper.DependencyInjection;
+global using bawabetak_backend.Extensions.DependencyInjection;
+global using Bawabetak.Extensions.Configurations;
 
 
