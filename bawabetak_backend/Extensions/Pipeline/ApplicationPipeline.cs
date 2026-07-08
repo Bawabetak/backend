@@ -4,12 +4,9 @@ public static class ApplicationPipeline
 {
     public static WebApplication UseApplicationPipeline(this WebApplication app)
     {
-        // 1. أول حاجة الـ Exception عشان يلقط أي مشكلة بتحصل في الميدل ويرز اللي بعده
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseMiddleware<RateLimitingMiddleware>();
 
-        // 2. تفعيل الـ Static Files عشان يقرا الفايلات من الـ wwwroot (سواء موجود لوكال أو على الهوست)
-        // لازم يتحط بدري عشان لو جالك ريكويست على صورة يرجعها علطول من غير ما يضيع وقت في الـ Routing والـ Auth
         app.UseStaticFiles();
 
         app.UseSwagger();
@@ -24,7 +21,7 @@ public static class ApplicationPipeline
 
         app.UseRouting();
 
-     
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
