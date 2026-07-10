@@ -18,6 +18,7 @@ public class Program
                .AddAppOptions(builder.Configuration)
                .AddHelpers()
                .AddVerificationStrategies()
+               .AddHttpContextAccessor()
                .AddCacheServices(builder.Configuration)
                .AddHangfireServices(builder.Configuration)
                .AddAutoMapperConfiguration()

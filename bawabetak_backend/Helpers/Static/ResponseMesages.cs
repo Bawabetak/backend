@@ -13,7 +13,27 @@
             [ResponseKeys.InvalidFileContentType] = "Invalid file content type.",
             [ResponseKeys.UserNotFound] = "User not found.",
             [ResponseKeys.StrategyNotFound] = "Strategy not found.",
-            [ResponseKeys.InvalidVerificationCode] = "Invalid verification code."
+            [ResponseKeys.InvalidVerificationCode] = "Invalid verification code.",
+            [ResponseKeys.EmailAlreadyExists] = "Email already exists.",
+            [ResponseKeys.RegistrationFailed] = "Registration failed.",
+            [ResponseKeys.RoleAssignmentFailed] = "Role assignment failed.",
+            [ResponseKeys.WrongPassword] = "Wrong password.",
+            [ResponseKeys.ResetNotApproved] = "Password reset not approved.",
+            [ResponseKeys.InvalidOldPassword] = "Invalid old password.",
+            [ResponseKeys.PasswordChangeFailed] = "Password change failed.",
+            [ResponseKeys.EmailNotVerified] = "Email not verified.",
+            [ResponseKeys.InvalidEmailOrPassword] = "Invalid email or password.",
+            [ResponseKeys.InvalidRefreshToken] = "Invalid refresh token.",
+            [ResponseKeys.RefreshTokenReused]= " Refresh token has been reused. Please login again.",
+            [ResponseKeys.RefreshTokenExpired]= "Refresh token has expired. Please login again.",
+            [ResponseKeys.SendVerificationSuccess] = "Verification code sent successfully.",
+            [ResponseKeys.CodeVerifiedSuccessfully] = "Verification code verified successfully.",
+            [ResponseKeys.UserRegisteredSuccessfully] = "User registered successfully.",
+            [ResponseKeys.UserLoggedInSuccessfully] = "User logged in successfully.",
+            [ResponseKeys.passwordResetSuccess] = "Password reset successfully.",
+            [ResponseKeys.passwordChangeSuccess] = "Password changed successfully.",
+            [ResponseKeys.TokenRefreshedSuccessfully] = "Token refreshed successfully."
+
 
 
 

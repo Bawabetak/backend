@@ -40,6 +40,15 @@ global using bawabetak_backend.Strategies.SendVerification.Interface;
 global using bawabetak_backend.Exceptions;
 global using bawabetak_backend.Strategies.SendVerification.Implementation;
 global using bawabetak_backend.Strategies.CheckVerification.Interface;
+global using bawabetak_backend.Dtos.AuthDtos;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using bawabetak_backend.Strategies.Login.Interface;
+global using bawabetak_backend.Strategies.Login.Implementation;
+global using bawabetak_backend.Strategies.CheckVerification.Implementation;
+global using System.Security.Cryptography;
+global using bawabetak_backend.Strategies.Refresh.Interface;
+global using bawabetak_backend.Services.Implementation;
+global using bawabetak_backend.Strategies.Refresh.Implementation;
 
 
 

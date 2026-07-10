@@ -1,5 +1,5 @@
 ﻿
-using bawabetak_backend.Strategies.CheckVerification.Implementation;
+
 
 namespace bawabetak_backend.Extensions.DependencyInjection
 {
@@ -10,12 +10,18 @@ namespace bawabetak_backend.Extensions.DependencyInjection
           
 
             services.AddScoped<ISendVerificationStrategy, RegisterSendStrategy>();
-            services.AddScoped<ISendVerificationStrategy, ResetPasswordSendStrategy>();
+            services.AddScoped<ISendVerificationStrategy, ForgetPasswordSendStrategy>();
             services.AddScoped<ISendVerificationFactory, SendVerificationFactory>();
             services.AddScoped<ICheckVerificationStrategy, RegisterCheckStrategy>();
-            services.AddScoped<ICheckVerificationStrategy, ResetPasswordCheckStrategy>();
+            services.AddScoped<ICheckVerificationStrategy, ForgetPasswordCheckStrategy>();
             services.AddScoped<ICheckVerificationFactory, CheckVerificationFactory>();
-
+            services.AddScoped<ILoginFactory, LoginFactory>();
+            services.AddScoped<ILoginStrategy, MobileLoginStrategy>();
+            services.AddScoped<ILoginStrategy, WebLoginStrategy>();
+            services.AddScoped<IRefreshTokenCoreService, RefreshTokenCoreService>();
+            services.AddScoped<IRefreshTokenFactory, RefreshTokenFactory>();
+            services.AddScoped<IRefreshTokenStrategy, MobileRefreshTokenStrategy>();
+            services.AddScoped<IRefreshTokenStrategy, WebRefreshTokenStrategy>();
 
 
             return services;

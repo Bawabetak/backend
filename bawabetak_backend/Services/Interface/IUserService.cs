@@ -1,6 +1,15 @@
-﻿namespace bawabetak_backend.Services.Interface
+﻿
+namespace bawabetak_backend.Services.Interface
 {
     public interface IUserService
     {
+        Task SendVerificationCodeAsync(SendVerificationDto dto);
+        Task VerifyCodeAsync(VerifyCodeDto dto);
+
+        Task RegisterAsync(RegisterDto dto);
+        Task<AuthTokenResponseDto> LoginAsync(LoginDto dto);
+        Task ForgetPasswordAsync(ForgetPasswordDto dto);
+        Task ResetPasswordAsync(ChangePasswordDto dto);
+        Task<AuthTokenResponseDto> RefreshTokenAsync(RefreshTokenDto dto);
     }
 }

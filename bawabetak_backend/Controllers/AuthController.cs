@@ -1,0 +1,65 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace bawabetak_backend.Controllers
+{
+    [ApiController]
+    [Route("api/auth")]
+    public class AuthController : ControllerBase
+    {
+        private readonly IUserService _userService;
+
+        public AuthController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpPost("send-verification")]
+        public async Task<IActionResult> SendVerificationCode([FromBody] SendVerificationDto dto)
+        {
+            await _userService.SendVerificationCodeAsync(dto);
+            return Ok(ResponseHelper.Success(ResponseKeys.SendVerificationSuccess));
+        }
+
+        [HttpPost("verify-code")]
+        public async Task<IActionResult> VerifyCode([FromBody] VerifyCodeDto dto)
+        {
+            await _userService.VerifyCodeAsync(dto);
+            return Ok(ResponseHelper.Success(ResponseKeys.CodeVerifiedSuccessfully));
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        {
+            await _userService.RegisterAsync(dto);
+            return Ok(ResponseHelper.Success(ResponseKeys.UserRegisteredSuccessfully));
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
+        {
+            var result = await _userService.LoginAsync(dto);
+            return Ok(ResponseHelper.Success(ResponseKeys.UserLoggedInSuccessfully, result));
+        }
+
+        [HttpPost("Forget-password")]
+        public async Task<IActionResult> ForgetPassword([FromBody] ForgetPasswordDto dto)
+        {
+            await _userService.ForgetPasswordAsync(dto);
+            return Ok(ResponseHelper.Success(ResponseKeys.passwordResetSuccess));
+        }
+
+        [HttpPost("Change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+        {
+            await _userService.ResetPasswordAsync(dto);
+            return Ok(ResponseHelper.Success(ResponseKeys.passwordChangeSuccess));
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto? dto)
+        {
+            var result = await _userService.RefreshTokenAsync(dto ?? new RefreshTokenDto());
+            return Ok(ResponseHelper.Success(ResponseKeys.TokenRefreshedSuccessfully, result));
+        }
+    }
+}

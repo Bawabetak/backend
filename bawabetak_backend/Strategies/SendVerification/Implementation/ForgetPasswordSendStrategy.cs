@@ -3,14 +3,14 @@
 namespace bawabetak_backend.Strategies.SendVerification.Implementation
 {
 
-    public class ResetPasswordSendStrategy : ISendVerificationStrategy
+    public class ForgetPasswordSendStrategy : ISendVerificationStrategy
     {
-        public VerficationType VerificationType => VerficationType.resetPassword;
+        public VerficationType VerificationType => VerficationType.forgetpassword;
         private readonly ICacheHelper _cacheHelper;
         private readonly IEmailSenderHelper _emailSenderHelper;
         private readonly IUserRepository _userRepository;
 
-        public ResetPasswordSendStrategy(ICacheHelper cacheHelper, IEmailSenderHelper emailSenderHelper, IUserRepository userRepository)
+        public ForgetPasswordSendStrategy(ICacheHelper cacheHelper, IEmailSenderHelper emailSenderHelper, IUserRepository userRepository)
         {
             _cacheHelper = cacheHelper;
             _emailSenderHelper = emailSenderHelper;
@@ -25,10 +25,10 @@ namespace bawabetak_backend.Strategies.SendVerification.Implementation
                 throw new NotFoundCustomException(ResponseKeys.UserNotFound);
             }
 
-            var code = new Random().Next(100000, 999999).ToString();
-            var cacheKey = $"resetPassword_{email}";
-            _cacheHelper.SetAsync(cacheKey, code, TimeSpan.FromMinutes(1));
-            await _emailSenderHelper.SendEmailAsync(email, "Reset Password Verification Code", $"Your verification code is: {code}");
+            var code = RandomNumberGenerator.GetInt32(100000, 1000000).ToString();
+            var cacheKey = $"forgetPassword_{email}";
+           await _cacheHelper.SetAsync(cacheKey, code, TimeSpan.FromMinutes(1));
+            await _emailSenderHelper.SendEmailAsync(email, "Forget Password Verification Code", $"Your verification code is: {code}");
         }
     }
 }

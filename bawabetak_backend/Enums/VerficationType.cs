@@ -3,6 +3,6 @@
     public enum VerficationType
     {
         register ,
-        resetPassword ,
+        forgetpassword ,
     }
 }

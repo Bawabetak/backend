@@ -12,12 +12,12 @@
             _emailSenderHelper = emailSenderHelper;
         }
 
-        public Task SendVerficationCode(string email)
+        public async Task SendVerficationCode(string email)
         {
-            var code = new Random().Next(100000, 999999).ToString();
+            var code = RandomNumberGenerator.GetInt32(100000, 1000000).ToString();
             var cacheKey = $"register_{email}";
-            _cacheHelper.SetAsync(cacheKey, code, TimeSpan.FromMinutes(1));
-            return _emailSenderHelper.SendEmailAsync(email, "Registration Verification Code", $"Your verification code is: {code}");
+           await _cacheHelper.SetAsync(cacheKey, code, TimeSpan.FromMinutes(1));
+            await _emailSenderHelper.SendEmailAsync(email, "Registration Verification Code", $"Your verification code is: {code}");
         }
     }
 }

@@ -12,9 +12,9 @@ namespace bawabetak_backend.Repositories.Implementation
             _userManager = userManager;
         }
 
-        public async Task AddUserToRoleAsync(ApplicationUser user, string roleName)
+        public async Task<IdentityResult> AddUserToRoleAsync(ApplicationUser user, string roleName)
         {
-             await _userManager.AddToRoleAsync(user, roleName);
+           return  await _userManager.AddToRoleAsync(user, roleName);
         }
 
         public async Task CreatRoleAsync(string roleName)
