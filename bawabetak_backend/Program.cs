@@ -12,10 +12,12 @@ public class Program
         builder.Services
                .AddDatabase(builder.Configuration)
                .AddSwaggerConfiguration()
+               .AddJwtAuthentication(builder.Configuration)
                .AddRepositories()
                .AddServices()
                .AddAppOptions(builder.Configuration)
                .AddHelpers()
+               .AddVerificationStrategies()
                .AddCacheServices(builder.Configuration)
                .AddHangfireServices(builder.Configuration)
                .AddAutoMapperConfiguration()

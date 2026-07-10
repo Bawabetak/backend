@@ -10,7 +10,11 @@
             [ResponseKeys.FileIsRequired] = "File is required.",
             [ResponseKeys.FileSizeExceeded] = "File size exceeded the limit.",
             [ResponseKeys.InvalidFileType] = "Invalid file type.",
-            [ResponseKeys.InvalidFileContentType] = "Invalid file content type."
+            [ResponseKeys.InvalidFileContentType] = "Invalid file content type.",
+            [ResponseKeys.UserNotFound] = "User not found.",
+            [ResponseKeys.StrategyNotFound] = "Strategy not found.",
+            [ResponseKeys.InvalidVerificationCode] = "Invalid verification code."
+
 
 
 

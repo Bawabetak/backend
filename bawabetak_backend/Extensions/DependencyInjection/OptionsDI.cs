@@ -7,7 +7,8 @@ namespace bawabetak_backend.Extensions.DependencyInjection
         public static IServiceCollection AddAppOptions(this IServiceCollection services, IConfiguration config)
         {
             services.Configure<MailSettings>(config.GetSection("MailSettings"));
-            
+            services.Configure<JwtSettings>(config.GetSection("Jwt"));
+
 
             services.AddMemoryCache();
 

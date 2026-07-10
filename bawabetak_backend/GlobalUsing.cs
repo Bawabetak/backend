@@ -30,5 +30,16 @@ global using bawabetak_backend.Models;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using bawabetak_backend.Dtos.RoleDtos;
 global using bawabetak_backend.Repositories.Abstract;
+global using System.Text;
+global using Microsoft.IdentityModel.Tokens;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using System.Security.Cryptography;
+global using System.Security.Claims;
+global using System.IdentityModel.Tokens.Jwt;
+global using bawabetak_backend.Strategies.SendVerification.Interface;
+global using bawabetak_backend.Exceptions;
+global using bawabetak_backend.Strategies.SendVerification.Implementation;
+global using bawabetak_backend.Strategies.CheckVerification.Interface;
+
 
 

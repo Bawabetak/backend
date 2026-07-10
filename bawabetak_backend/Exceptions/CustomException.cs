@@ -2,7 +2,7 @@
 using bawabetak_backend.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace bawabetak_backend.Helpers.Errors;
+namespace bawabetak_backend.Exceptions;
 
 public class BadRequestCustomException : BaseException
 {

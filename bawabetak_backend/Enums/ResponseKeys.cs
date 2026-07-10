@@ -8,6 +8,9 @@
         FileIsRequired,
         FileSizeExceeded,
         InvalidFileType,
-        InvalidFileContentType
+        InvalidFileContentType,
+        UserNotFound,
+        StrategyNotFound,
+        InvalidVerificationCode
     }
 }

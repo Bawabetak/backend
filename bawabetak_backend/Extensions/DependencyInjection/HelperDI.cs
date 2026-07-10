@@ -11,6 +11,7 @@ namespace bawabetak_backend.Extensions.DependencyInjection
 
             services.AddScoped<IEmailSenderHelper, EmailSenderHelper>();
             services.AddScoped<ICacheHelper, CacheHelper>();
+            services.AddScoped<ITokenHelper, TokenHelper>();
             return services;
         }
     }
