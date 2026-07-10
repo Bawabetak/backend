@@ -1,10 +1,11 @@
 ﻿
 
+
 namespace bawabetak_backend.Data
 {
 
 
-    public class Context : DbContext
+    public class Context : IdentityDbContext<ApplicationUser>
     {
         public Context(DbContextOptions<Context> options)
             : base(options)

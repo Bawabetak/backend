@@ -13,8 +13,11 @@ public static class DatabaseConfiguration
 
             options.LogTo(Console.WriteLine, LogLevel.Information)
                    .EnableSensitiveDataLogging();
-
         });
+
+        services.AddIdentity<ApplicationUser, IdentityRole>()
+        .AddEntityFrameworkStores<Context>() 
+        .AddDefaultTokenProviders();
 
         return services;
     }

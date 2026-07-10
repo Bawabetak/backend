@@ -25,5 +25,10 @@ global using bawabetak_backend.Services.Interface;
 global using bawabetak_backend.Helpers.ProgramHelper.DependencyInjection;
 global using bawabetak_backend.Extensions.DependencyInjection;
 global using Bawabetak.Extensions.Configurations;
+global using Microsoft.AspNetCore.Identity;
+global using bawabetak_backend.Models;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using bawabetak_backend.Dtos.RoleDtos;
+global using bawabetak_backend.Repositories.Abstract;
 
 
