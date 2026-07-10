@@ -1,5 +1,4 @@
-﻿using bawabetak_backend.Helpers.Errors;
-
+﻿
 namespace bawabetak_backend.Helpers.Static
 {
     public static class FileValidator
