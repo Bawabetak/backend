@@ -24,7 +24,8 @@ namespace bawabetak_backend.Repositories.Implementation
 
         public async Task<List<GetRolesDto>> GetAllRolesAsync()
         {
-            return await _roleManager.Roles.Select(r=> new GetRolesDto
+            return await _roleManager.Roles.AsNoTracking()
+                .Select(r=> new GetRolesDto
             {
                 Id = r.Id,
                 Name = r.Name

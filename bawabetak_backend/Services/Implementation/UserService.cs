@@ -11,6 +11,7 @@
         private readonly ICacheHelper _cacheHelper;
         private readonly IRefreshTokenFactory _refreshTokenFactory;
         private readonly IFileService _fileService;
+        private readonly IMapper _mapper;
 
         public UserService(
             IUserRepository userRepository,
@@ -21,7 +22,8 @@
             IHttpContextAccessor httpContextAccessor,
             ICacheHelper cacheHelper,
             IRefreshTokenFactory refreshTokenFactory,
-            IFileService fileService
+            IFileService fileService,
+            IMapper mapper
             )
         {
             _userRepository = userRepository;
@@ -33,6 +35,7 @@
             _cacheHelper = cacheHelper;
             _refreshTokenFactory = refreshTokenFactory;
             _fileService = fileService;
+            _mapper = mapper;
         }
 
         public async Task SendVerificationCodeAsync(SendVerificationDto dto)
@@ -63,17 +66,9 @@
             var photoFileName = await _fileService.SaveFileAsync(dto.Photo, FileCategory.UserPhoto);
             var identityFileName = await _fileService.SaveFileAsync(dto.IdentityDocument, FileCategory.UserIdentityDocument);
 
-            var user = new ApplicationUser
-            {
-                UserName = dto.Email,
-                Email = dto.Email,
-                FullName = dto.FullName,
-                Address = dto.Address,
-                NationalNumber = dto.NationalNumber,
-                Photo = photoFileName,
-                IdentityDocument = identityFileName
-
-            };
+        var user=_mapper.Map<ApplicationUser>(dto);
+            user.Photo = photoFileName;
+            user.IdentityDocument = identityFileName;
 
             var result = await _userRepository.CreateUserAsync(user, dto.Password);
           
