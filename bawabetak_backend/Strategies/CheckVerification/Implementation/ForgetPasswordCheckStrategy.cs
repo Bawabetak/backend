@@ -22,7 +22,7 @@ namespace bawabetak_backend.Strategies.CheckVerification.Implementation
                throw new BadRequestCustomException(ResponseKeys.InvalidVerificationCode);
             }
             var approvalKey = $"ResetApproved_{email}";
-            await _cacheHelper.SetAsync(approvalKey, "true", TimeSpan.FromMinutes(2));
+            await _cacheHelper.SetAsync(approvalKey, true, TimeSpan.FromMinutes(2));
 
 
             await _cacheHelper.RemoveAsync(cacheKey);

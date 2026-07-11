@@ -16,9 +16,8 @@ namespace bawabetak_backend.Services.Implementation
 
         private string GetFolderName(FileCategory category) => category switch
         {
-            FileCategory.UserProfile => "users/profiles",
-            FileCategory.UserVerification => "users/verifications",
-            FileCategory.ProjectAssets => "projects/assets",
+            FileCategory.UserPhoto => "users/Photos",
+            FileCategory.UserIdentityDocument => "users/Identities",
             _ => "misc"
         };
 

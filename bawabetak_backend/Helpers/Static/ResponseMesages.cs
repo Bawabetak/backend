@@ -32,7 +32,8 @@
             [ResponseKeys.UserLoggedInSuccessfully] = "User logged in successfully.",
             [ResponseKeys.passwordResetSuccess] = "Password reset successfully.",
             [ResponseKeys.passwordChangeSuccess] = "Password changed successfully.",
-            [ResponseKeys.TokenRefreshedSuccessfully] = "Token refreshed successfully."
+            [ResponseKeys.TokenRefreshedSuccessfully] = "Token refreshed successfully.",
+            [ResponseKeys.NewPasswordCannotBeSameAsOld] = "New password cannot be the same as the old password."
 
 
 

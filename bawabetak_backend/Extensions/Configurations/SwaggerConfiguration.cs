@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace bawabetak_backend.Extensions.Configurations;
 
@@ -15,6 +15,8 @@ public static class SwaggerConfiguration
                 Title = "Bawabetak API",
                 Version = "v1"
             });
+
+            options.OperationFilter<ClientTypeHeaderOperationFilter>();
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
@@ -43,5 +45,31 @@ public static class SwaggerConfiguration
         });
 
         return services;
+    }
+
+    private class ClientTypeHeaderOperationFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            operation.Parameters ??= new List<OpenApiParameter>();
+
+            operation.Parameters.Add(new OpenApiParameter
+            {
+                Name = "X-Client-Type",
+                In = ParameterLocation.Header,
+                Required = true,
+                Description = "Client Type (Web | Mobile)",
+                Schema = new OpenApiSchema
+                {
+                    Type = "string",
+                    Default = new OpenApiString("Web"),
+                    Enum = new List<IOpenApiAny>
+                    {
+                        new OpenApiString("Web"),
+                        new OpenApiString("Mobile")
+                    }
+                }
+            });
+        }
     }
 }

@@ -10,6 +10,7 @@
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICacheHelper _cacheHelper;
         private readonly IRefreshTokenFactory _refreshTokenFactory;
+        private readonly IFileService _fileService;
 
         public UserService(
             IUserRepository userRepository,
@@ -19,7 +20,8 @@
             ILoginFactory loginFactory,
             IHttpContextAccessor httpContextAccessor,
             ICacheHelper cacheHelper,
-            IRefreshTokenFactory refreshTokenFactory
+            IRefreshTokenFactory refreshTokenFactory,
+            IFileService fileService
             )
         {
             _userRepository = userRepository;
@@ -30,6 +32,7 @@
             _httpContextAccessor = httpContextAccessor;
             _cacheHelper = cacheHelper;
             _refreshTokenFactory = refreshTokenFactory;
+            _fileService = fileService;
         }
 
         public async Task SendVerificationCodeAsync(SendVerificationDto dto)
@@ -44,7 +47,7 @@
             await strategy.VerifyCodeAsync(dto.Email, dto.Code);
         }
 
-        public async Task RegisterAsync(RegisterDto dto)
+        public async Task<IdentityResult> RegisterAsync(RegisterDto dto)
         {
             var isApproved = await _cacheHelper.GetAsync<bool>($"RegisterApproved_{dto.Email}");
             if (!isApproved)
@@ -57,19 +60,23 @@
             {
                 throw new BadRequestCustomException(ResponseKeys.EmailAlreadyExists);
             }
+            var photoFileName = await _fileService.SaveFileAsync(dto.Photo, FileCategory.UserPhoto);
+            var identityFileName = await _fileService.SaveFileAsync(dto.IdentityDocument, FileCategory.UserIdentityDocument);
 
             var user = new ApplicationUser
             {
                 UserName = dto.Email,
                 Email = dto.Email,
                 FullName = dto.FullName,
+                Address = dto.Address,
+                NationalNumber = dto.NationalNumber,
+                Photo = photoFileName,
+                IdentityDocument = identityFileName
+
             };
 
             var result = await _userRepository.CreateUserAsync(user, dto.Password);
-            if (!result.Succeeded)
-            {
-                throw new BadRequestCustomException(ResponseKeys.RegistrationFailed);
-            }
+          
 
             var roleResult = await _roleRepository.AddUserToRoleAsync(user, "User");
             if (!roleResult.Succeeded)
@@ -79,6 +86,7 @@
             }
 
             await _cacheHelper.RemoveAsync($"RegisterApproved_{dto.Email}");
+            return result;
         }
 
         public async Task<AuthTokenResponseDto> LoginAsync(LoginDto dto)
@@ -86,7 +94,7 @@
             var httpContext = _httpContextAccessor.HttpContext;
             string clientType = "Web"; 
 
-            if (httpContext != null && httpContext.Request.Headers.TryGetValue("Client-Type", out var headerValue))
+            if (httpContext != null && httpContext.Request.Headers.TryGetValue("X-Client-Type", out var headerValue))
             {
                 clientType = headerValue.ToString();
             }
@@ -120,9 +128,13 @@
             await _cacheHelper.RemoveAsync(approvalKey);
         }
 
-        public async Task ResetPasswordAsync(ChangePasswordDto dto)
+        public async Task<IdentityResult> ResetPasswordAsync(ChangePasswordDto dto)
         {
-           
+            var IsSamePassword = dto.NewPassword == dto.OldPassword;
+            if (IsSamePassword)
+            {
+                throw new BadRequestCustomException(ResponseKeys.NewPasswordCannotBeSameAsOld);
+            }
 
             var user = await _userRepository.GetUserByEmailAsync(dto.Email);
             if (user == null) throw new NotFoundCustomException(ResponseKeys.UserNotFound);
@@ -132,19 +144,17 @@
             {
                 throw new BadRequestCustomException(ResponseKeys.InvalidOldPassword);
             }
+          
 
             var result = await _userRepository.ChangePassword(user, dto.OldPassword, dto.NewPassword);
-            if (!result.Succeeded)
-            {
-                throw new BadRequestCustomException(ResponseKeys.PasswordChangeFailed);
-            }
+            return result;
         }
         public async Task<AuthTokenResponseDto> RefreshTokenAsync(RefreshTokenDto dto)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             string clientType = "Web";
 
-            if (httpContext != null && httpContext.Request.Headers.TryGetValue("Client-Type", out var headerValue))
+            if (httpContext != null && httpContext.Request.Headers.TryGetValue("X-Client-Type", out var headerValue))
             {
                 clientType = headerValue.ToString();
             }

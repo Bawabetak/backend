@@ -2,8 +2,7 @@
 {
     public enum FileCategory
     {
-    UserProfile,
-    UserVerification, 
-    ProjectAssets
+      UserPhoto,
+        UserIdentityDocument,
     }
 }

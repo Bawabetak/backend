@@ -28,9 +28,15 @@ namespace bawabetak_backend.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        [Consumes("multipart/form-data")]
+
+        public async Task<IActionResult> Register([FromForm] RegisterDto dto)
         {
-            await _userService.RegisterAsync(dto);
+          var result=  await _userService.RegisterAsync(dto);
+            if(!result.Succeeded)
+            {
+                return BadRequest(ResponseHelper.Error(ResponseKeys.RegistrationFailed, result.Errors.Select(e => e.Description).ToList()));
+            }
             return Ok(ResponseHelper.Success(ResponseKeys.UserRegisteredSuccessfully));
         }
 
@@ -51,7 +57,11 @@ namespace bawabetak_backend.Controllers
         [HttpPost("Change-password")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
         {
-            await _userService.ResetPasswordAsync(dto);
+           var result= await _userService.ResetPasswordAsync(dto);
+            if(!result.Succeeded)
+            {
+                return BadRequest(ResponseHelper.Error(ResponseKeys.PasswordChangeFailed, result.Errors.Select(e => e.Description).ToList()));
+            }
             return Ok(ResponseHelper.Success(ResponseKeys.passwordChangeSuccess));
         }
 

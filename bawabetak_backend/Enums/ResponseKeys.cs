@@ -31,5 +31,6 @@
         passwordResetSuccess,
         passwordChangeSuccess,
         TokenRefreshedSuccessfully,
+        NewPasswordCannotBeSameAsOld
     }
 }
