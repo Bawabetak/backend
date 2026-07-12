@@ -30,5 +30,8 @@ namespace bawabetak_backend.Dtos.AuthDtos
 
         [Required]
         public IFormFile IdentityDocument { get; set; } = null!;
+        [RegularExpression(@"^01[0125]\d{8}$",
+            ErrorMessage = "Phone number must be a valid Egyptian mobile number.")]
+        public string? PhoneNumber { get; set; }
     }
 }
