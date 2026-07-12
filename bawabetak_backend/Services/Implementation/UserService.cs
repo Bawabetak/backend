@@ -12,6 +12,7 @@
         private readonly IRefreshTokenFactory _refreshTokenFactory;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
+        private readonly IEventPublisher _eventPublisher;
 
         public UserService(
             IUserRepository userRepository,
@@ -23,7 +24,8 @@
             ICacheHelper cacheHelper,
             IRefreshTokenFactory refreshTokenFactory,
             IFileService fileService,
-            IMapper mapper
+            IMapper mapper,
+            IEventPublisher eventPublisher
             )
         {
             _userRepository = userRepository;
@@ -36,6 +38,7 @@
             _refreshTokenFactory = refreshTokenFactory;
             _fileService = fileService;
             _mapper = mapper;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task SendVerificationCodeAsync(SendVerificationDto dto)
@@ -52,39 +55,35 @@
 
         public async Task<IdentityResult> RegisterAsync(RegisterDto dto)
         {
-            var isApproved = await _cacheHelper.GetAsync<bool>($"RegisterApproved_{dto.Email}");
-            if (!isApproved)
-            {
-                throw new BadRequestCustomException(ResponseKeys.EmailNotVerified);
-            }
-
-            var existingUser = await _userRepository.GetUserByEmailAsync(dto.Email);
-            if (existingUser != null)
+            var user= await _userRepository.GetUserByEmailAsync(dto.Email);
+            if (user != null)
             {
                 throw new BadRequestCustomException(ResponseKeys.EmailAlreadyExists);
             }
-            var photoFileName = await _fileService.SaveFileAsync(dto.Photo, FileCategory.UserPhoto);
-            var identityFileName = await _fileService.SaveFileAsync(dto.IdentityDocument, FileCategory.UserIdentityDocument);
-
-        var user=_mapper.Map<ApplicationUser>(dto);
-            user.Photo = photoFileName;
-            user.IdentityDocument = identityFileName;
-
+            user = new ApplicationUser
+            {
+                Email = dto.Email,
+                UserName = dto.Email,
+            };
             var result = await _userRepository.CreateUserAsync(user, dto.Password);
-          
-
             var roleResult = await _roleRepository.AddUserToRoleAsync(user, "User");
+
             if (!roleResult.Succeeded)
             {
-                await _userRepository.DeleteUserAsync(user); 
                 throw new BadRequestCustomException(ResponseKeys.RoleAssignmentFailed);
             }
 
-            await _cacheHelper.RemoveAsync($"RegisterApproved_{dto.Email}");
+            if (result.Succeeded)
+                {
+                    await _eventPublisher.PublishAsync(
+                        new UserRegisteredEvent(user.Email!));
+                }
+
+            
             return result;
         }
 
-        public async Task<AuthTokenResponseDto> LoginAsync(LoginDto dto)
+        public async Task<LoginResponseDto> LoginAsync(LoginDto dto)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             string clientType = "Web"; 
@@ -156,6 +155,52 @@
 
             var strategy = _refreshTokenFactory.GetStrategy(clientType);
             return await strategy.RefreshAsync(dto?.RefreshToken);
+        }
+
+        
+
+        public async Task CompleteRegister(CompleteRegisterDto dto)
+        {
+            var isApproved = await _cacheHelper.GetAsync<bool>($"RegisterApproved_{dto.Email}");
+
+            if (!isApproved)
+            {
+                throw new BadRequestCustomException(ResponseKeys.EmailNotVerified);
+            }
+
+            var user = await _userRepository.GetUserByEmailAsync(dto.Email);
+
+            if (user == null)
+            {
+                throw new NotFoundCustomException(ResponseKeys.UserNotFound);
+            }
+
+            if (user.IsCompleteRegistration)
+            {
+                throw new BadRequestCustomException(ResponseKeys.RegistrationAlreadyCompleted);
+            }
+
+            var photoFileName = await _fileService.SaveFileAsync(
+                dto.Photo,
+                FileCategory.UserPhoto);
+
+            var identityFileName = await _fileService.SaveFileAsync(
+                dto.IdentityDocument,
+                FileCategory.UserIdentityDocument);
+
+            _mapper.Map(dto, user);
+
+            user.Photo = photoFileName;
+            user.IdentityDocument = identityFileName;
+
+            user.IsEmailVerified = true;
+            user.IsCompleteRegistration = true;
+
+            await _userRepository.UpdateUserAsync(user);
+
+         
+
+            await _cacheHelper.RemoveAsync($"RegisterApproved_{dto.Email}");
         }
     }
 }

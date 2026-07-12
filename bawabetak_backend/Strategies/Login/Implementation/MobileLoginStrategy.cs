@@ -16,7 +16,7 @@ namespace bawabetak_backend.Strategies.Login.Implementation
 
         public string ClientType => "Mobile";
 
-        public async Task<AuthTokenResponseDto> Login(ApplicationUser user, IList<string> roles)
+        public async Task<LoginResponseDto> Login(ApplicationUser user, IList<string> roles)
         {
 
             var accessToken = _tokenHelper.GenerateToken(user, roles);
@@ -30,10 +30,13 @@ namespace bawabetak_backend.Strategies.Login.Implementation
             };
             await _refreshTokenRepository.AddAsync(refreshTokenEntity);
             await _refreshTokenRepository.SaveChangesAsync();
-            return new AuthTokenResponseDto
+            return new LoginResponseDto
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                IsEmailVerified = user.IsEmailVerified,
+                IsApproved = user.IsApproved,
+                IsCompleteRegistration = user.IsCompleteRegistration
             };
         }
     }

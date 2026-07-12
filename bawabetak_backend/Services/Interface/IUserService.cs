@@ -7,9 +7,10 @@ namespace bawabetak_backend.Services.Interface
         Task VerifyCodeAsync(VerifyCodeDto dto);
 
         Task<IdentityResult> RegisterAsync(RegisterDto dto);
-        Task<AuthTokenResponseDto> LoginAsync(LoginDto dto);
+        Task<LoginResponseDto> LoginAsync(LoginDto dto);
         Task ForgetPasswordAsync(ForgetPasswordDto dto);
         Task<IdentityResult> ResetPasswordAsync(ChangePasswordDto dto);
         Task<AuthTokenResponseDto> RefreshTokenAsync(RefreshTokenDto dto);
+        Task CompleteRegister(CompleteRegisterDto dto);
     }
 }

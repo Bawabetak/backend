@@ -28,12 +28,14 @@
             [ResponseKeys.RefreshTokenExpired]= "Refresh token has expired. Please login again.",
             [ResponseKeys.SendVerificationSuccess] = "Verification code sent successfully.",
             [ResponseKeys.CodeVerifiedSuccessfully] = "Verification code verified successfully.",
-            [ResponseKeys.UserRegisteredSuccessfully] = "User registered successfully.",
+            [ResponseKeys.UserRegisteredSuccessfully] = "User registered successfully. check your email to verify it",
             [ResponseKeys.UserLoggedInSuccessfully] = "User logged in successfully.",
             [ResponseKeys.passwordResetSuccess] = "Password reset successfully.",
             [ResponseKeys.passwordChangeSuccess] = "Password changed successfully.",
             [ResponseKeys.TokenRefreshedSuccessfully] = "Token refreshed successfully.",
-            [ResponseKeys.NewPasswordCannotBeSameAsOld] = "New password cannot be the same as the old password."
+            [ResponseKeys.NewPasswordCannotBeSameAsOld] = "New password cannot be the same as the old password.",
+            [ResponseKeys.RegistrationAlreadyCompleted] = "Registration has already been completed.",
+            [ResponseKeys.UserCompleteRegisterSuccessfully] = "User registration completed successfully."
 
 
 

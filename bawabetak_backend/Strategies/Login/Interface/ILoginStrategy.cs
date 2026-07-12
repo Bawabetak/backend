@@ -3,6 +3,6 @@
     public interface ILoginStrategy
     {
         string ClientType { get; }
-        public Task<AuthTokenResponseDto> Login(ApplicationUser user, IList<string> roles);
+        public Task<LoginResponseDto> Login(ApplicationUser user, IList<string> roles);
     }
 }

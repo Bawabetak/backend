@@ -21,7 +21,7 @@ namespace bawabetak_backend.Strategies.Login.Implementation
             _hashHelper = hashHelper;
         }
 
-        public async Task<AuthTokenResponseDto> Login(ApplicationUser user, IList<string> roles)
+        public async Task<LoginResponseDto> Login(ApplicationUser user, IList<string> roles)
         {
             var accessToken = _tokenHelper.GenerateToken(user, roles);
             var refreshToken = _tokenHelper.GenerateRefreshToken();
@@ -48,10 +48,13 @@ namespace bawabetak_backend.Strategies.Login.Implementation
 
                 httpContext.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
             }
-            return  new AuthTokenResponseDto
+            return  new LoginResponseDto
             {
-                AccessToken = accessToken
-               
+                AccessToken = accessToken,
+                IsApproved = user.IsApproved,
+                IsCompleteRegistration = user.IsCompleteRegistration,
+                IsEmailVerified = user.IsEmailVerified,
+
             };
 
         }

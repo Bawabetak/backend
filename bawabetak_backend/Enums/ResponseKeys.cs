@@ -31,6 +31,8 @@
         passwordResetSuccess,
         passwordChangeSuccess,
         TokenRefreshedSuccessfully,
-        NewPasswordCannotBeSameAsOld
+        NewPasswordCannotBeSameAsOld,
+        RegistrationAlreadyCompleted,
+        UserCompleteRegisterSuccessfully
     }
 }

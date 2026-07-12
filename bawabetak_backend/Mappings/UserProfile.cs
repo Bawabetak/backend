@@ -4,9 +4,9 @@
     {
         public UserProfile()
         {
-            CreateMap<RegisterDto, ApplicationUser>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
-
-        }   
+            CreateMap<CompleteRegisterDto, ApplicationUser>()
+                .ForMember(dest => dest.Photo, opt => opt.Ignore())
+                .ForMember(dest => dest.IdentityDocument, opt => opt.Ignore());
+        }
     }
 }

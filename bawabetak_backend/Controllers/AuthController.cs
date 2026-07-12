@@ -28,7 +28,6 @@ namespace bawabetak_backend.Controllers
         }
 
         [HttpPost("register")]
-        [Consumes("multipart/form-data")]
 
         public async Task<IActionResult> Register([FromForm] RegisterDto dto)
         {
@@ -39,7 +38,14 @@ namespace bawabetak_backend.Controllers
             }
             return Ok(ResponseHelper.Success(ResponseKeys.UserRegisteredSuccessfully));
         }
+        [HttpPost("register-complete")]
+        [Consumes("multipart/form-data")]
 
+        public async Task<IActionResult> CompleteRegister([FromForm] CompleteRegisterDto dto)
+        {
+            await _userService.CompleteRegister(dto);
+            return Ok(ResponseHelper.Success(ResponseKeys.UserCompleteRegisterSuccessfully));
+        }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
