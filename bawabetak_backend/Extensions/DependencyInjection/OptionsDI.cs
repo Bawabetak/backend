@@ -1,5 +1,4 @@
-﻿using bawabetak_backend.Dtos;
-
+﻿
 namespace bawabetak_backend.Extensions.DependencyInjection
 {
     public static class OptionsDI
@@ -8,6 +7,7 @@ namespace bawabetak_backend.Extensions.DependencyInjection
         {
             services.Configure<MailSettings>(config.GetSection("MailSettings"));
             services.Configure<JwtSettings>(config.GetSection("Jwt"));
+            services.Configure<RateLimitingSettings>(config.GetSection("RateLimiting"));    
 
 
             services.AddMemoryCache();

@@ -29,7 +29,7 @@ namespace bawabetak_backend.Controllers
 
         [HttpPost("register")]
 
-        public async Task<IActionResult> Register([FromForm] RegisterDto dto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
           var result=  await _userService.RegisterAsync(dto);
             if(!result.Succeeded)
