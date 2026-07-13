@@ -10,6 +10,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services
+            
                .AddDatabase(builder.Configuration)
                .AddSwaggerConfiguration()
                .AddCorsPolicy()
@@ -22,6 +23,7 @@ public class Program
                .AddJobs()
                .AddVerificationStrategies()
                .AddHttpContextAccessor()
+               .AddHttpClient()
                .AddCacheServices(builder.Configuration)
                .AddHangfireServices(builder.Configuration)
                .AddAutoMapperConfiguration()

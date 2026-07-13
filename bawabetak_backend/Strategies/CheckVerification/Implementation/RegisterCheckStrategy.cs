@@ -29,6 +29,7 @@ namespace bawabetak_backend.Strategies.CheckVerification.Implementation
             await _cacheHelper.RemoveAsync(cacheKey);
 
             await _cacheHelper.SetAsync($"RegisterApproved_{email}", true, TimeSpan.FromMinutes(10));
+            await _userRepository.MarkAsVerifiedAsync(email);
 
         }
     }

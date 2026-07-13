@@ -4,10 +4,12 @@ namespace bawabetak_backend.Repositories.Implementation
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly Context _context;
 
-        public UserRepository(UserManager<ApplicationUser> userManager)
+        public UserRepository(UserManager<ApplicationUser> userManager,Context context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         public async Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password)
@@ -59,6 +61,14 @@ namespace bawabetak_backend.Repositories.Implementation
         public async Task<bool> UserExistsAsync(string userId)
         {
             return await _userManager.Users.AnyAsync(u => u.Id == userId);
+        }
+
+        public async Task MarkAsVerifiedAsync(string email)
+        {
+           await _context.Users
+                .Where(u => u.Email == email)
+                .ExecuteUpdateAsync(u => u.SetProperty(user => user.IsEmailVerified, true));
+            await _context.SaveChangesAsync();
         }
     }
 }

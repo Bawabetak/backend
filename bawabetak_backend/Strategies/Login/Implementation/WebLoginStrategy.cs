@@ -36,7 +36,7 @@ namespace bawabetak_backend.Strategies.Login.Implementation
             await _refreshTokenRepository.AddAsync(refreshTokenEntity);
             await _refreshTokenRepository.SaveChangesAsync();
             var httpContext = _httpContextAccessor.HttpContext;
-            if (httpContext != null)
+            if (user.IsApproved&&user.IsCompleteRegistration&&user.IsEmailVerified)
             {
                 var cookieOptions = new CookieOptions
                 {

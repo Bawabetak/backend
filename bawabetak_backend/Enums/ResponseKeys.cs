@@ -35,5 +35,7 @@
         RegistrationAlreadyCompleted,
         UserCompleteRegisterSuccessfully,
         Unauthorized,
+        UserDeleteFailed,
+        UserDeleteSuccess,
     }
 }

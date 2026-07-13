@@ -13,6 +13,7 @@
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
         private readonly IEventPublisher _eventPublisher;
+        private readonly ICurrentUserHelper _currentUserHelper;
 
         public UserService(
             IUserRepository userRepository,
@@ -25,7 +26,8 @@
             IRefreshTokenFactory refreshTokenFactory,
             IFileService fileService,
             IMapper mapper,
-            IEventPublisher eventPublisher
+            IEventPublisher eventPublisher,
+            ICurrentUserHelper currentUserHelper
             )
         {
             _userRepository = userRepository;
@@ -39,6 +41,7 @@
             _fileService = fileService;
             _mapper = mapper;
             _eventPublisher = eventPublisher;
+            _currentUserHelper = currentUserHelper;
         }
 
         public async Task SendVerificationCodeAsync(SendVerificationDto dto)
@@ -102,7 +105,13 @@
             var roles = await _roleRepository.GetRolesByUserAsync(user);
 
             var strategy = _loginFactory.GetStrategy(clientType);
-            return await strategy.Login(user, roles);
+            var result= await strategy.Login(user, roles);
+            if(!user.IsCompleteRegistration||!user.IsEmailVerified||!user.IsApproved)
+            {
+                result.AccessToken=string.Empty;
+                result.RefreshToken = string.Empty;
+            }
+            return result;
         }
 
         public async Task ForgetPasswordAsync(ForgetPasswordDto dto)
@@ -193,7 +202,6 @@
             user.Photo = photoFileName;
             user.IdentityDocument = identityFileName;
 
-            user.IsEmailVerified = true;
             user.IsCompleteRegistration = true;
 
             await _userRepository.UpdateUserAsync(user);
@@ -201,6 +209,18 @@
          
 
             await _cacheHelper.RemoveAsync($"RegisterApproved_{dto.Email}");
+        }
+
+        public async Task<IdentityResult> DeleteMe(string email)
+        {
+           
+            var user =await _userRepository.GetUserByEmailAsync(email);
+            if (user == null)
+            {
+                throw new NotFoundCustomException(ResponseKeys.UserNotFound);
+            }
+            var result = await _userRepository.DeleteUserAsync(user);
+            return result;
         }
     }
 }

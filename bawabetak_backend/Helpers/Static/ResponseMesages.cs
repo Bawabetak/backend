@@ -37,6 +37,9 @@
             [ResponseKeys.RegistrationAlreadyCompleted] = "Registration has already been completed.",
             [ResponseKeys.UserCompleteRegisterSuccessfully] = "User registration completed successfully.",
             [ResponseKeys.Unauthorized] = "Unauthorized access.",
+            [ResponseKeys.UserDeleteFailed] = "User deletion failed.",
+            [ResponseKeys.UserDeleteSuccess] = "User deleted successfully.",
+
 
 
 

@@ -2,7 +2,7 @@
 
 namespace bawabetak_backend.Repositories.Abstract
 {
-    public interface IUserRepository
+    public interface IUserRepository 
     {
         Task<IdentityResult> CreateUserAsync(ApplicationUser user, string password);
 
@@ -23,5 +23,7 @@ namespace bawabetak_backend.Repositories.Abstract
         Task<bool> IsSamePasswordAsync(ApplicationUser user, string password);
 
         Task<bool> UserExistsAsync(string userId);
+        Task MarkAsVerifiedAsync(string email);
+        
     }
 }

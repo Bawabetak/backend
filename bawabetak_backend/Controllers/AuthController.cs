@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace bawabetak_backend.Controllers
 {
@@ -76,6 +77,16 @@ namespace bawabetak_backend.Controllers
         {
             var result = await _userService.RefreshTokenAsync(dto ?? new RefreshTokenDto());
             return Ok(ResponseHelper.Success(ResponseKeys.TokenRefreshedSuccessfully, result));
+        }
+        [HttpDelete("delete-me")]
+        public async Task<IActionResult> DeleteMe([FromForm] string email)
+        {
+            var result = await _userService.DeleteMe(email);
+            if (!result.Succeeded)
+            {
+                return BadRequest(ResponseHelper.Error(ResponseKeys.UserDeleteFailed, result.Errors.Select(e => e.Description).ToList()));
+            }
+            return Ok(ResponseHelper.Success(ResponseKeys.UserDeleteSuccess));
         }
     }
 }

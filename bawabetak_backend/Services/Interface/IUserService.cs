@@ -12,5 +12,6 @@ namespace bawabetak_backend.Services.Interface
         Task<IdentityResult> ResetPasswordAsync(ChangePasswordDto dto);
         Task<AuthTokenResponseDto> RefreshTokenAsync(RefreshTokenDto dto);
         Task CompleteRegister(CompleteRegisterDto dto);
+        Task <IdentityResult> DeleteMe(string email);
     }
 }
