@@ -13,6 +13,7 @@ namespace bawabetak_backend.Extensions.DependencyInjection
             services.AddScoped<ICacheHelper, CacheHelper>();
             services.AddScoped<ITokenHelper, TokenHelper>();
             services.AddScoped<IHashHelper,HashHelper>();
+            services.AddScoped<ICurrentUserHelper, CurrentUserHelper>();
             return services;
         }
     }

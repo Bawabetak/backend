@@ -33,6 +33,7 @@
         TokenRefreshedSuccessfully,
         NewPasswordCannotBeSameAsOld,
         RegistrationAlreadyCompleted,
-        UserCompleteRegisterSuccessfully
+        UserCompleteRegisterSuccessfully,
+        Unauthorized,
     }
 }

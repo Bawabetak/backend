@@ -35,7 +35,8 @@
             [ResponseKeys.TokenRefreshedSuccessfully] = "Token refreshed successfully.",
             [ResponseKeys.NewPasswordCannotBeSameAsOld] = "New password cannot be the same as the old password.",
             [ResponseKeys.RegistrationAlreadyCompleted] = "Registration has already been completed.",
-            [ResponseKeys.UserCompleteRegisterSuccessfully] = "User registration completed successfully."
+            [ResponseKeys.UserCompleteRegisterSuccessfully] = "User registration completed successfully.",
+            [ResponseKeys.Unauthorized] = "Unauthorized access.",
 
 
 
