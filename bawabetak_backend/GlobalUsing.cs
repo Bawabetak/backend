@@ -52,11 +52,11 @@ global using bawabetak_backend.Strategies.Refresh.Implementation;
 global using System.ComponentModel.DataAnnotations;
 global using Microsoft.OpenApi.Any;
 global using Microsoft.OpenApi.Models;
-global using bawabetak_backend.Events.Interfaces;
 global using bawabetak_backend.Events;
 global using bawabetak_backend.Jobs.Interface;
 global using bawabetak_backend.Jobs.Implementaion;
 global using bawabetak_backend.Dtos.RateLimitDto;
+global using MediatR;
 
 
 

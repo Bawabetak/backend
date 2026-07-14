@@ -1,4 +1,5 @@
-﻿namespace bawabetak_backend.Events
+﻿
+namespace bawabetak_backend.Events
 {
-    public record UserRegisteredEvent(string Email);
+    public record UserRegisteredEvent(string Email) : INotification;
 }

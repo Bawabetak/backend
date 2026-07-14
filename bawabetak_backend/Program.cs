@@ -1,6 +1,7 @@
 ﻿
 
 
+
 namespace bawabetak_backend;
 
 public class Program
@@ -19,7 +20,7 @@ public class Program
                .AddServices()
                .AddAppOptions(builder.Configuration)
                .AddHelpers()
-               .AddEventHandlers()
+               .AddMediatRConfiguration()
                .AddJobs()
                .AddVerificationStrategies()
                .AddHttpContextAccessor()

@@ -1,18 +1,23 @@
-﻿public class UserRegisteredEventHandler
-    : IEventHandler<UserRegisteredEvent>
+﻿namespace bawabetak_backend.Events.Handlers
 {
-    private readonly IBackgroundJobClient _backgroundJob;
-
-    public UserRegisteredEventHandler(IBackgroundJobClient backgroundJob)
+    public class UserRegisteredEventHandler
+    : INotificationHandler<UserRegisteredEvent>
     {
-        _backgroundJob = backgroundJob;
-    }
+        private readonly IBackgroundJobClient _backgroundJob;
 
-    public Task HandleAsync(UserRegisteredEvent @event)
-    {
-        _backgroundJob.Enqueue<IRegisterVerificationJob>(job =>
-            job.SendAsync(@event.Email));
+        public UserRegisteredEventHandler(IBackgroundJobClient backgroundJob)
+        {
+            _backgroundJob = backgroundJob;
+        }
 
-        return Task.CompletedTask;
+        public Task Handle(
+            UserRegisteredEvent notification,
+            CancellationToken cancellationToken)
+        {
+            _backgroundJob.Enqueue<IRegisterVerificationJob>(job =>
+                job.SendAsync(notification.Email));
+
+            return Task.CompletedTask;
+        }
     }
 }

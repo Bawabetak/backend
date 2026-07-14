@@ -12,7 +12,7 @@
         private readonly IRefreshTokenFactory _refreshTokenFactory;
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
-        private readonly IEventPublisher _eventPublisher;
+        private readonly IMediator _mediator;
         private readonly ICurrentUserHelper _currentUserHelper;
 
         public UserService(
@@ -26,7 +26,7 @@
             IRefreshTokenFactory refreshTokenFactory,
             IFileService fileService,
             IMapper mapper,
-            IEventPublisher eventPublisher,
+            IMediator mediator,
             ICurrentUserHelper currentUserHelper
             )
         {
@@ -40,7 +40,7 @@
             _refreshTokenFactory = refreshTokenFactory;
             _fileService = fileService;
             _mapper = mapper;
-            _eventPublisher = eventPublisher;
+            _mediator = mediator;
             _currentUserHelper = currentUserHelper;
         }
 
@@ -78,9 +78,8 @@
 
             if (result.Succeeded)
                 {
-                    await _eventPublisher.PublishAsync(
-                        new UserRegisteredEvent(user.Email!));
-                }
+                   await _mediator.Publish(new UserRegisteredEvent(user.Email));
+            }
 
             
             return result;
