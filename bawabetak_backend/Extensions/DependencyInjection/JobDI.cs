@@ -7,6 +7,7 @@ namespace bawabetak_backend.Extensions.DependencyInjection
         public static IServiceCollection AddJobs(this IServiceCollection services)
         {
             services.AddScoped<IRegisterVerificationJob, RegisterVerificationJob>();
+            services.AddScoped<IRemoveUnVerifiedEmailsJob, RemoveUnVerifiedEmailsJob>();
             return services;
         }
     }

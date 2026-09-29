@@ -1,6 +1,4 @@
-﻿using bawabetak_backend.Data;
-using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace bawabetak_backend.Extensions.Configurations;
 
 public static class DatabaseConfiguration

@@ -1,6 +1,4 @@
-﻿
-
-namespace bawabetak_backend.Middlewares;
+﻿namespace bawabetak_backend.Middlewares;
 
 public class ExceptionMiddleware
 {
@@ -23,12 +21,13 @@ public class ExceptionMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception occurred: {Message}", ex.Message);
-            await HandleExceptionAsync(context, ex);
+            var root = GetRootException(ex);
+            _logger.LogError(ex, "Unhandled exception. Root cause: {RootMessage}", root.Message);
+            await HandleExceptionAsync(context, ex, root);
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception, Exception root)
     {
         context.Response.ContentType = "application/json";
 
@@ -36,14 +35,23 @@ public class ExceptionMiddleware
 
         if (exception is BaseException baseEx)
         {
-            context.Response.StatusCode = baseEx.StatusCode; 
+            context.Response.StatusCode = baseEx.StatusCode;
             apiResponse = ResponseHelper.Error(baseEx.ResponseKey);
         }
         else
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-            dynamic? errorData = _env.IsDevelopment() ? exception.StackTrace : null;
+            // التفاصيل تظهر في Development بس، في Production مبنرجعش حاجة
+            dynamic? errorData = _env.IsDevelopment()
+                ? new
+                {
+                    message = root.Message,
+                    type = root.GetType().Name,
+                    stackTrace = exception.StackTrace
+                }
+                : null;
+
             apiResponse = ResponseHelper.Error(ResponseKeys.InternalServerError, errorData);
         }
 
@@ -53,8 +61,13 @@ public class ExceptionMiddleware
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         };
 
-        var jsonResponse = JsonSerializer.Serialize(apiResponse, jsonOptions);
+        await context.Response.WriteAsync(JsonSerializer.Serialize(apiResponse, jsonOptions));
+    }
 
-        await context.Response.WriteAsync(jsonResponse);
+    private static Exception GetRootException(Exception ex)
+    {
+        while (ex.InnerException != null)
+            ex = ex.InnerException;
+        return ex;
     }
 }

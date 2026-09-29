@@ -1,8 +1,4 @@
-﻿using bawabetak_backend.Dtos;
-using MailKit.Security;
-using MimeKit.Text;
-using MimeKit;
-
+﻿
 namespace Wasla_Backend.Helpers.EmailSender
 {
     public class EmailSenderHelper : IEmailSenderHelper

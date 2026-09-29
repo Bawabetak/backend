@@ -24,6 +24,8 @@ namespace bawabetak_backend.Repositories.Abstract
 
         Task<bool> UserExistsAsync(string userId);
         Task MarkAsVerifiedAsync(string email);
-        
+        Task RemoveUnVerifiedEmails();
+
+
     }
 }

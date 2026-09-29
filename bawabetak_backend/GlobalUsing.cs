@@ -57,7 +57,9 @@ global using bawabetak_backend.Jobs.Interface;
 global using bawabetak_backend.Jobs.Implementaion;
 global using bawabetak_backend.Dtos.RateLimitDto;
 global using MediatR;
-
+global using MailKit.Security;
+global using MimeKit.Text;
+global using MimeKit;
 
 
 

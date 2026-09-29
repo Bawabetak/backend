@@ -7,11 +7,13 @@ namespace bawabetak_backend.Strategies.CheckVerification.Implementation
         public VerficationType VerificationType => VerficationType.register;
         private readonly ICacheHelper _cacheHelper;
         private readonly IUserRepository _userRepository;
+        private readonly IHashHelper _hashHelper;
 
-        public RegisterCheckStrategy(ICacheHelper cacheHelper, IUserRepository userRepository)
+        public RegisterCheckStrategy(ICacheHelper cacheHelper, IUserRepository userRepository, IHashHelper hashHelper)
         {
             _cacheHelper = cacheHelper;
             _userRepository = userRepository;
+            _hashHelper = hashHelper;
         }
 
         public async Task VerifyCodeAsync(string email, string code)
@@ -19,12 +21,17 @@ namespace bawabetak_backend.Strategies.CheckVerification.Implementation
             var cacheKey = $"register_{email}";
             var savedCode = await _cacheHelper.GetAsync<string>(cacheKey);
 
-            if (string.IsNullOrEmpty(savedCode) || savedCode != code)
+            if (string.IsNullOrEmpty(savedCode) )
             {
                 throw new BadRequestCustomException(ResponseKeys.InvalidVerificationCode);
             }
 
+            var isSameCode = _hashHelper.VerifyHash(code, savedCode);
+            if (!isSameCode)
+            {
+                throw new BadRequestCustomException(ResponseKeys.InvalidVerificationCode);
 
+            }
 
             await _cacheHelper.RemoveAsync(cacheKey);
 

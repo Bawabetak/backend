@@ -70,5 +70,11 @@ namespace bawabetak_backend.Repositories.Implementation
                 .ExecuteUpdateAsync(u => u.SetProperty(user => user.IsEmailVerified, true));
             await _context.SaveChangesAsync();
         }
+
+        public async Task RemoveUnVerifiedEmails()
+        {
+            await _userManager.Users.Where(u => !u.IsEmailVerified)
+                .ExecuteDeleteAsync();
+        }
     }
 }

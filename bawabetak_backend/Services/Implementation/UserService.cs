@@ -59,9 +59,14 @@
         public async Task<IdentityResult> RegisterAsync(RegisterDto dto)
         {
             var user= await _userRepository.GetUserByEmailAsync(dto.Email);
-            if (user != null)
+            if (user != null&&user.IsEmailVerified)
             {
                 throw new BadRequestCustomException(ResponseKeys.EmailAlreadyExists);
+            }
+            if(user!=null&&!user.IsEmailVerified)
+            {
+                await _userRepository.DeleteUserAsync(user);
+                
             }
             user = new ApplicationUser
             {
@@ -69,6 +74,11 @@
                 UserName = dto.Email,
             };
             var result = await _userRepository.CreateUserAsync(user, dto.Password);
+
+            if (!result.Succeeded)
+            {
+                return result;
+            }
             var roleResult = await _roleRepository.AddUserToRoleAsync(user, "User");
 
             if (!roleResult.Succeeded)
@@ -77,7 +87,7 @@
             }
 
             if (result.Succeeded)
-                {
+            {
                    await _mediator.Publish(new UserRegisteredEvent(user.Email));
             }
 

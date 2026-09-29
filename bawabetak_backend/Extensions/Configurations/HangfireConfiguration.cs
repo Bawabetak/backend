@@ -18,6 +18,7 @@ public static class HangfireConfiguration
 
         services.AddHangfireServer();
 
+
         return services;
     }
 }
