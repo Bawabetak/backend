@@ -179,18 +179,18 @@
 
         public async Task CompleteRegister(CompleteRegisterDto dto)
         {
-            var isApproved = await _cacheHelper.GetAsync<bool>($"RegisterApproved_{dto.Email}");
-
-            if (!isApproved)
-            {
-                throw new BadRequestCustomException(ResponseKeys.EmailNotVerified);
-            }
+            
 
             var user = await _userRepository.GetUserByEmailAsync(dto.Email);
 
             if (user == null)
             {
                 throw new NotFoundCustomException(ResponseKeys.UserNotFound);
+            }
+
+            if(!user.IsEmailVerified)
+            {
+                throw new BadRequestCustomException(ResponseKeys.EmailNotVerified);
             }
 
             if (user.IsCompleteRegistration)
@@ -217,7 +217,6 @@
 
          
 
-            await _cacheHelper.RemoveAsync($"RegisterApproved_{dto.Email}");
         }
 
         public async Task<IdentityResult> DeleteMe(string email)

@@ -39,6 +39,7 @@
             [ResponseKeys.Unauthorized] = "Unauthorized access.",
             [ResponseKeys.UserDeleteFailed] = "User deletion failed.",
             [ResponseKeys.UserDeleteSuccess] = "User deleted successfully.",
+            [ResponseKeys.notApprovedToCompleteRegister] = "User is not approved to complete registration.",
 
 
 

@@ -37,5 +37,6 @@
         Unauthorized,
         UserDeleteFailed,
         UserDeleteSuccess,
+        notApprovedToCompleteRegister,
     }
 }
